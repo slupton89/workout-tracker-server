@@ -25,6 +25,12 @@ app.use(
 
 app.use('/logs', LogsRouter);
 
+app.use((req, res, next) => {
+  const err = new Error('Not Found')
+  err.status = 404;
+  return next(err);
+})
+
 app.use(function (err, req, res, next) {
   if(err.status) {
     const errBody = Object.assign({}, err, {message: err.message});
