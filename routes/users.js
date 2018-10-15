@@ -44,9 +44,9 @@ userRouter.get('/:id', (req, res, next) => {
 
 // POST item
 userRouter.post('/', (req, res, next) => {
-  const { userName, fullName, email, height, weight, age } = req.body;
+  const { username, password, fullName, email, height, weight, age } = req.body;
 
-  const reqFields = {userName, fullName, email};
+  const reqFields = {username, password, fullName, email};
 
   for (const field in reqFields) {
     if(!reqFields[field]) {
@@ -57,7 +57,7 @@ userRouter.post('/', (req, res, next) => {
   }
 
 
-  const newUser = {userName, fullName, email, height, weight, age};
+  const newUser = {username, password, fullName, email, height, weight, age};
 
   User.create(newUser)
     .then(result => {
@@ -73,7 +73,7 @@ userRouter.post('/', (req, res, next) => {
 // UPDATE item
 userRouter.patch('/:id', (req, res, next) => {
   const {id} = req.params;
-  const {userName, fullName, email, height, weight, age} = req.body;
+  const {username, password, fullName, email, height, weight, age} = req.body;
   // const userId = req.user.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -82,13 +82,17 @@ userRouter.patch('/:id', (req, res, next) => {
     return next(err);
   }
 
-  if (!title) {
-    const err = new Error('Missing `title` in request body');
-    err.status = 400;
-    return next(err);
-  }
+  const updateUser = {username, password, fullName, email, height, weight, age};
 
-  const updateUser = {userName, fullName, email, height, weight, age};
+  const reqFields = {username, password, fullName, email};
+
+  for (const field in reqFields) {
+    if(!reqFields[field]) {
+      const err = new Error(`Missing '${field}' in req body`);
+      err.status = 400;
+      return next(err);
+     }
+  }
 
   User.findOneAndUpdate({_id:id}, updateUser, {new: true})
     .then(result => {
