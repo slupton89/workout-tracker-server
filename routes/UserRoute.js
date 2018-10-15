@@ -21,7 +21,7 @@ UserRouter.get('/', (req, res, next) => {
 // GET by id
 UserRouter.get('/:id', (req, res, next) => {
   const {id} = req.params;
-  const userId = req.user.id;
+  // const userId = req.user.id;
 
   if(!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error(`The 'id' is not valid`);
@@ -46,11 +46,16 @@ UserRouter.get('/:id', (req, res, next) => {
 UserRouter.post('/', (req, res, next) => {
   const { userName, fullName, email, height, weight, age } = req.body;
 
-  if(!title) {
-    const err = new Error(`Missing 'title' in req body`);
-    err.status = 400;
-    return next(err);
+  const reqFields = {userName, fullName, email};
+
+  for (const field in reqFields) {
+    if(!reqFields[field]) {
+      const err = new Error(`Missing '${field}' in req body`);
+      err.status = 400;
+      return next(err);
+     }
   }
+
 
   const newUser = {userName, fullName, email, height, weight, age};
 
@@ -69,7 +74,7 @@ UserRouter.post('/', (req, res, next) => {
 UserRouter.patch('/:id', (req, res, next) => {
   const {id} = req.params;
   const {userName, fullName, email, height, weight, age} = req.body;
-  const userId = req.user.id;
+  // const userId = req.user.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('The `id` is not valid');
@@ -102,7 +107,7 @@ UserRouter.patch('/:id', (req, res, next) => {
 
 UserRouter.delete('/:id', (req, res, next) => {
   const {id} = req.params;
-  const userId = req.user.id;
+  // const userId = req.user.id;
 
   if(!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error(`The 'id' is not valid`);
