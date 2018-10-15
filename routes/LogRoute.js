@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const Log = require('../models/Logs');
+const Log = require('../models/Log');
 
 const LogRouter = express.Router();
 
@@ -21,7 +21,7 @@ LogRouter.get('/', (req, res, next) => {
 // GET by id
 LogRouter.get('/:id', (req, res, next) => {
   const {id} = req.params;
-  const userId = req.user.id;
+  // const userId = req.user.id;
 
   if(!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error(`The 'id' is not valid`);
@@ -32,6 +32,7 @@ LogRouter.get('/:id', (req, res, next) => {
   Log.findOne({_id: id})
     .then(result => {
       if(result) {
+        console.log(req.params.id)
         res.json(result);
       } else {
         next();
@@ -66,10 +67,10 @@ LogRouter.post('/', (req, res, next) => {
 });
 
 // UPDATE item
-LogRouter('/:id', (req, res, next) => {
+LogRouter.patch('/:id', (req, res, next) => {
   const {id} = req.params;
   const {title} = req.body;
-  const userId = req.user.id;
+  // const userId = req.user.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('The `id` is not valid');
@@ -119,4 +120,4 @@ LogRouter.delete('/:id', (req, res, next) => {
     });
 });
 
-module.exports = LogsRouter;
+module.exports = LogRouter;

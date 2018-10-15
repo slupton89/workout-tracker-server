@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const LogSchema = mongoose.Schema({
+const LogSchema = new mongoose.Schema({
   title: { type: String, required: true },
   //workoutType
   //startedAt
@@ -15,6 +15,4 @@ LogSchema.methods.serialize = function() {
   }
 }
 
-const Log = mongoose.model("Log", LogSchema);
-
-module.exports = {Log};
+module.exports = mongoose.model("Log", LogSchema);

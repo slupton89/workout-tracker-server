@@ -7,8 +7,8 @@ const morgan = require('morgan');
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
 
-const LogsRouter = require('./Routes/Logs');
-
+const LogRouter = require('./routes/LogRoute');
+const UserRouter = require('./routes/UserRoute');
 const app = express();
 
 app.use(
@@ -17,20 +17,28 @@ app.use(
   })
 );
 
+// allow cross origin requests
 app.use(
   cors({
     origin: CLIENT_ORIGIN
   })
 );
 
-app.use('/logs', LogsRouter);
+// Parse req body
+app.use(express.json());
 
+// mount routers
+app.use('/api/logs', LogRouter);
+app.use('/api/users', UserRouter);
+
+// 404 handler
 app.use((req, res, next) => {
   const err = new Error('Not Found')
   err.status = 404;
   return next(err);
 })
 
+// custom error handler
 app.use(function (err, req, res, next) {
   if(err.status) {
     const errBody = Object.assign({}, err, {message: err.message});
