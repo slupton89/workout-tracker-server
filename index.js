@@ -11,8 +11,9 @@ const jwtStrategy = require('./passport/jwt');
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
 
-const LogRouter = require('./routes/logs');
-const UserRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
+const logRouter = require('./routes/logs');
+const userRouter = require('./routes/users');
 const app = express();
 
 app.use(
@@ -31,10 +32,17 @@ app.use(
 // Parse req body
 app.use(express.json());
 
-// mount routers
-app.use('/api/logs', LogRouter);
-app.use('/api/users', UserRouter);
+// Utilize the given 'strategy'
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
+// Protect endpoints using JWT
+const jwtAuth = passport.authenticate('jwt', {session: false, failWithError: true});
+
+// mount routers
+app.use('/api/logs', jwtAuth, logRouter);
+app.use('/api/users', userRouter);
+app.use('/api', authRouter);
 // 404 handler
 app.use((req, res, next) => {
   const err = new Error('Not Found')

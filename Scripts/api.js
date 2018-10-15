@@ -5,7 +5,8 @@ const api = (function () {
       type: 'GET',
       url: '/api/logs',
       dataType: 'json',
-      data: query
+      data: query,
+      headers: { 'Authorization': `Bearer ${store.currentUser.authToken}`}
     });
   },
 
@@ -14,6 +15,7 @@ const api = (function () {
       type: 'GET',
       url: `/api/logs/${id}`,
       dataType: 'json',
+      headers: { 'Authorization': `Bearer ${store.currentUser.authToken}`}
     });
   },
 
@@ -23,7 +25,8 @@ const api = (function () {
       url: `/api/logs/${id}`,
       contentType: 'application/json',
       dataType: 'json',
-      data: JSON.stringify(obj)
+      data: JSON.stringify(obj),
+      headers: { 'Authorization': `Bearer ${store.currentUser.authToken}`}
     });
   },
 
@@ -34,7 +37,8 @@ const api = (function () {
       contentType: 'application/json',
       dataType: 'json',
       processData: false,
-      data: JSON.stringify(obj)
+      data: JSON.stringify(obj),
+      headers: { 'Authorization': `Bearer ${store.currentUser.authToken}`}
     });
   },
 
@@ -42,7 +46,8 @@ const api = (function () {
     return $.ajax({
       type: 'DELETE',
       url: `/api/logs/${id}`,
-      dataType: 'json'
+      dataType: 'json',
+      headers: { 'Authorization': `Bearer ${store.currentUser.authToken}`}
     });
   }
 
