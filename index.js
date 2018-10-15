@@ -11,6 +11,26 @@ const data = require('./data');
 
 const app = express();
 
+const cheeseData =  [
+  "Bath Blue",
+  "Barkham Blue",
+  "Buxton Blue",
+  "Cheshire Blue",
+  "Devon Blue",
+  "Dorset Blue Vinney",
+  "Dovedale",
+  "Exmoor Blue",
+  "Harbourne Blue",
+  "Lanark Blue",
+  "Lymeswold",
+  "Oxford Blue",
+  "Shropshire Blue",
+  "Stichelton",
+  "Stilton",
+  "Blue Wensleydale",
+  "Yorkshire Blue"
+]
+
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
     skip: (req, res) => process.env.NODE_ENV === 'test'
@@ -24,7 +44,7 @@ app.use(
 );
 
 app.get('/api/cheeses', (req, res) => {
-  res.json(data);
+  return res.json(cheeseData);
 });
 
 function runServer(port = PORT) {
