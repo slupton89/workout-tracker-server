@@ -1,12 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const Log = require('../models/Log');
+const Log = require('../models/log');
 
-const LogRouter = express.Router();
+const logRouter = express.Router();
 
 // GET all
-LogRouter.get('/', (req, res, next) => {
+logRouter.get('/', (req, res, next) => {
   // const userId = req.user.id;
   Log.find()
     .sort()
@@ -19,7 +19,7 @@ LogRouter.get('/', (req, res, next) => {
 });
 
 // GET by id
-LogRouter.get('/:id', (req, res, next) => {
+logRouter.get('/:id', (req, res, next) => {
   const {id} = req.params;
   // const userId = req.user.id;
 
@@ -44,7 +44,7 @@ LogRouter.get('/:id', (req, res, next) => {
 });
 
 // POST item
-LogRouter.post('/', (req, res, next) => {
+logRouter.post('/', (req, res, next) => {
   const { title } = req.body;
 
   if(!title) {
@@ -67,7 +67,7 @@ LogRouter.post('/', (req, res, next) => {
 });
 
 // UPDATE item
-LogRouter.patch('/:id', (req, res, next) => {
+logRouter.patch('/:id', (req, res, next) => {
   const {id} = req.params;
   const {title} = req.body;
   // const userId = req.user.id;
@@ -101,7 +101,7 @@ LogRouter.patch('/:id', (req, res, next) => {
 
 // DELETE item
 
-LogRouter.delete('/:id', (req, res, next) => {
+logRouter.delete('/:id', (req, res, next) => {
   const {id} = req.params;
   const userId = req.user.id;
 
@@ -120,4 +120,4 @@ LogRouter.delete('/:id', (req, res, next) => {
     });
 });
 
-module.exports = LogRouter;
+module.exports = logRouter;

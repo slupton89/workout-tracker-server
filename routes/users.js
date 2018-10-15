@@ -1,12 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const User = require('../models/User');
+const User = require('../models/user');
 
-const UserRouter = express.Router();
+const userRouter = express.Router();
 
 // GET all
-UserRouter.get('/', (req, res, next) => {
+userRouter.get('/', (req, res, next) => {
   // const userId = req.user.id;
   User.find()
     .sort()
@@ -19,7 +19,7 @@ UserRouter.get('/', (req, res, next) => {
 });
 
 // GET by id
-UserRouter.get('/:id', (req, res, next) => {
+userRouter.get('/:id', (req, res, next) => {
   const {id} = req.params;
   // const userId = req.user.id;
 
@@ -43,7 +43,7 @@ UserRouter.get('/:id', (req, res, next) => {
 });
 
 // POST item
-UserRouter.post('/', (req, res, next) => {
+userRouter.post('/', (req, res, next) => {
   const { userName, fullName, email, height, weight, age } = req.body;
 
   const reqFields = {userName, fullName, email};
@@ -71,7 +71,7 @@ UserRouter.post('/', (req, res, next) => {
 });
 
 // UPDATE item
-UserRouter.patch('/:id', (req, res, next) => {
+userRouter.patch('/:id', (req, res, next) => {
   const {id} = req.params;
   const {userName, fullName, email, height, weight, age} = req.body;
   // const userId = req.user.id;
@@ -105,7 +105,7 @@ UserRouter.patch('/:id', (req, res, next) => {
 
 // DELETE item
 
-UserRouter.delete('/:id', (req, res, next) => {
+userRouter.delete('/:id', (req, res, next) => {
   const {id} = req.params;
   // const userId = req.user.id;
 
@@ -124,4 +124,4 @@ UserRouter.delete('/:id', (req, res, next) => {
     });
 });
 
-module.exports = UserRouter;
+module.exports = userRouter;
