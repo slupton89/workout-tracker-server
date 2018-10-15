@@ -119,4 +119,4 @@ LogRouter.delete('/:id', (req, res, next) => {
     });
 });
 
-module.exports = LogRouter;
+module.exports = LogsRouter;

@@ -7,29 +7,9 @@ const morgan = require('morgan');
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
 
-const data = require('./data');
+const LogsRouter = require('./Routes/Logs');
 
 const app = express();
-
-const cheeseData =  [
-  "Bath Blue",
-  "Barkham Blue",
-  "Buxton Blue",
-  "Cheshire Blue",
-  "Devon Blue",
-  "Dorset Blue Vinney",
-  "Dovedale",
-  "Exmoor Blue",
-  "Harbourne Blue",
-  "Lanark Blue",
-  "Lymeswold",
-  "Oxford Blue",
-  "Shropshire Blue",
-  "Stichelton",
-  "Stilton",
-  "Blue Wensleydale",
-  "Yorkshire Blue"
-]
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -43,9 +23,19 @@ app.use(
   })
 );
 
-app.get('/api/cheeses', (req, res) => {
-  return res.json(cheeseData);
-});
+app.use('/logs', LogsRouter);
+
+app.use(function (err, req, res, next) {
+  if(err.status) {
+    const errBody = Object.assign({}, err, {message: err.message});
+    res.status(err.status).json(errBody);
+  } else {
+    res.status(500).json({message: 'Internal Server Error'});
+    if(err.name !== 'FakeError') {
+      console.log(err);
+    }
+  }
+})
 
 function runServer(port = PORT) {
   const server = app
