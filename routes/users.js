@@ -1,8 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-
 const User = require('../models/user');
-
 const userRouter = express.Router();
 
 // GET all
@@ -56,10 +54,15 @@ userRouter.post('/', (req, res, next) => {
      }
   }
 
-
-  const newUser = {username, password, fullName, email, height, weight, age};
-
-  User.create(newUser)
+  User.hashPassword(password)
+    .then(digest => {
+      return User
+        .create({
+          username,
+          password: digest,
+          fullName, email, height, weight, age
+        })
+    })
     .then(result => {
       res.location(`${req.originalUrl}/${result.id}`)
         .status(201)

@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
   weight: { type: Number, required: false },
 });
 
-UserSchema.methods.hashPassword = function (pwd) {
+UserSchema.statics.hashPassword = function (pwd) {
   return bcrypt.hash(pwd, 10);
 }
 
