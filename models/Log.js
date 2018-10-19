@@ -1,12 +1,10 @@
 const mongoose = require("mongoose");
 
 const LogSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  //workoutType
-  //startedAt
-  //endedAt
-  //comments\notes
-  //userId
+  workoutType: { type: String, required: true },
+  startedAt: { type: String, required: false },
+  endedAt: { type: String, required: false },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
 LogSchema.methods.serialize = function() {

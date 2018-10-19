@@ -7,8 +7,9 @@ const logRouter = express.Router();
 
 // GET all
 logRouter.get('/', (req, res, next) => {
-  // const userId = req.user.id;
-  Log.find()
+  const userId = req.user.id;
+
+  Log.find({userId})
     .sort()
     .then(results => {
       res.json(results);
@@ -21,7 +22,7 @@ logRouter.get('/', (req, res, next) => {
 // GET by id
 logRouter.get('/:id', (req, res, next) => {
   const {id} = req.params;
-  // const userId = req.user.id;
+  const userId = req.user.id;
 
   if(!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error(`The 'id' is not valid`);
@@ -29,7 +30,7 @@ logRouter.get('/:id', (req, res, next) => {
     return next(err);
   }
 
-  Log.findOne({_id: id})
+  Log.findOne({_id: id, userId})
     .then(result => {
       if(result) {
         console.log(req.params.id)
@@ -45,15 +46,20 @@ logRouter.get('/:id', (req, res, next) => {
 
 // POST item
 logRouter.post('/', (req, res, next) => {
-  const { title } = req.body;
-
-  if(!title) {
-    const err = new Error(`Missing 'title' in req body`);
-    err.status = 400;
-    return next(err);
+  console.log(req.user);
+  const { workoutType, startedAt, endedAt } = req.body;
+  const userId = req.user.id;
+  const reqFields = { workoutType };
+  // , startedAt, endedAt,
+  for (const field in reqFields) {
+    if(!reqFields[field]) {
+      const err = new Error(`Missing '${field}' in req body`);
+      err.status = 400;
+      return next(err);
+     }
   }
 
-  const newLog = {title};
+  const newLog = {workoutType, startedAt, endedAt, userId};
 
   Log.create(newLog)
     .then(result => {
@@ -69,8 +75,8 @@ logRouter.post('/', (req, res, next) => {
 // UPDATE item
 logRouter.patch('/:id', (req, res, next) => {
   const {id} = req.params;
-  const {title} = req.body;
-  // const userId = req.user.id;
+  const { workoutType, startedAt, endedAt } = req.body;
+  const userId = req.user.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('The `id` is not valid');
@@ -78,15 +84,9 @@ logRouter.patch('/:id', (req, res, next) => {
     return next(err);
   }
 
-  if (!title) {
-    const err = new Error('Missing `title` in request body');
-    err.status = 400;
-    return next(err);
-  }
-
   const updateLog = {title};
 
-  Log.findOneAndUpdate({_id:id}, updateLog, {new: true})
+  Log.findOneAndUpdate({_id:id, userId}, updateLog, {new: true})
     .then(result => {
       if(result) {
         res.json(result)
@@ -111,7 +111,7 @@ logRouter.delete('/:id', (req, res, next) => {
     return next(err);
   }
 
-  Log.findOneAndRemove({_id:id})
+  Log.findOneAndRemove({_id:id, userId})
     .then(() => {
       res.status(204).end();
     })

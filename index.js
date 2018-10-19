@@ -40,9 +40,10 @@ passport.use(jwtStrategy);
 const jwtAuth = passport.authenticate('jwt', {session: false, failWithError: true});
 
 // mount routers
-app.use('/api/logs', logRouter);
+app.use('/api/logs', jwtAuth, logRouter);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
+
 // 404 handler
 app.use((req, res, next) => {
   const err = new Error('Not Found')
