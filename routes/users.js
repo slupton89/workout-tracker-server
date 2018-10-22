@@ -65,7 +65,7 @@ userRouter.post('/', (req, res, next) => {
         })
     })
     .then(result => {
-      res.location(`${req.originalUrl}/${rec.user.id}/${result.id}`)
+      res.location(`${req.originalUrl}/${result.id}`)
         .status(201)
         .json(result);
     })
