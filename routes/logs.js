@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const Log = require('../dbmodels/log');
+const Log = require('../dbmodels/Log');
 
 const logRouter = express.Router();
 

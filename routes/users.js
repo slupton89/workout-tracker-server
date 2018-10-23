@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const User = require('../dbmodels/user');
+const User = require('../dbmodels/User');
 const userRouter = express.Router();
 
 // GET all
