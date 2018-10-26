@@ -47,9 +47,9 @@ logRouter.get('/:id', (req, res, next) => {
 // POST item
 logRouter.post('/', (req, res, next) => {
   console.log(req.user);
-  const { workoutType, startedAt, endedAt } = req.body;
+  const { workoutType, startedAt, endedAt, comments } = req.body;
   const userId = req.user.id;
-  const reqFields = { workoutType };
+  const reqFields = { workoutType, startedAt, endedAt };
   // , startedAt, endedAt,
   for (const field in reqFields) {
     if(!reqFields[field]) {
@@ -59,7 +59,7 @@ logRouter.post('/', (req, res, next) => {
      }
   }
 
-  const newLog = {workoutType, startedAt, endedAt, userId};
+  const newLog = {workoutType, startedAt, endedAt, comments, userId};
 
   Log.create(newLog)
     .then(result => {
@@ -75,7 +75,7 @@ logRouter.post('/', (req, res, next) => {
 // UPDATE item
 logRouter.patch('/:id', (req, res, next) => {
   const {id} = req.params;
-  const { workoutType, startedAt, endedAt } = req.body;
+  const { workoutType, startedAt, endedAt, comments } = req.body;
   const userId = req.user.id;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
