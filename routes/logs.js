@@ -10,7 +10,7 @@ logRouter.get('/', (req, res, next) => {
   const userId = req.user.id;
 
   Log.find({userId})
-    .sort()
+    .sort({createdAt: -1})
     .then(results => {
       res.json(results);
     })
